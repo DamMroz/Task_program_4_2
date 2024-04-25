@@ -1,0 +1,1 @@
+This program is a small calculator. You can enter additional numbers for addition and multiplication. If you are satisfíed, enter "gotowe".
