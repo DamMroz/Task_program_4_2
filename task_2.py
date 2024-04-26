@@ -1,108 +1,82 @@
-import sys
 import logging
-logging.basicConfig(level=logging.DEBUG, format='%(message)s')
 
+logging.basicConfig(level=logging.DEBUG, format="%(message)s")
 
-print("Napisz gotowe, gdy wszystkie liczby do większego zadania zostały podane")
-x=input("Podaj działanie, posługując się odpowiednią liczbą:""\n"
-      "1 Dodawanie, 2 Odejmowanie, 3 Mnożenie, 4 Dzielenie: ")
-def add(a,b):
-    logging.debug(f"Dodaję {sys.argv[1]} i {sys.argv[2]}")
-    sum=0
+def user_initial():
+    print("Napisz gotowe, gdy wszystkie liczby do większego zadania zostały podane")
+    x = input(
+        "Podaj działanie, posługując się odpowiednią liczbą:"
+        "\n"
+        "1 Dodawanie, 2 Odejmowanie, 3 Mnożenie, 4 Dzielenie: ")
     
-    
-    z=""  
-    while z!="gotowe":
+    return x
+
+x = user_initial()
+
+def user_in():
+    try:
+        a = float(input("Wpisz składnik 1: "))
+        b = float(input("Wpisz składnik 2: "))
+    except ValueError:
+        print("to nie liczba")
+        exit()
         
-       
-        
-                
-            
-        print("Wpisz dodatkową liczbę albo gotowe: ",end="")
-        z=input()
-        
-        
-        sys.argv.append(z)
-        if z=="gotowe":
-            break
+    return a, b
+
+def user_in_extended():
+    z = ""
+    my_list = []
+    my_list.clear()
+    while z != "gotowe":
+        z = input("Dalsza liczba: ")
+        my_list.append((z))
 
         try:
-            sum=sum+float(z)   
+            float(z)
         except ValueError:
-            print("To nie liczba")
+            if z == "gotowe":
+                my_list.remove("gotowe")
+                break
+            print("to nie liczba")
             exit()
-         
+
+    return my_list
+
+def add():
+    in_values = [float(i) for i in user_in()]
+    in_values_extended = [float(i) for i in user_in_extended()]
+    logging.debug(f"Dodaję {in_values[0]} i {in_values[1]}")
+    if len(in_values_extended) > 0:
+        logging.debug(f"i dodaję {in_values_extended[::]} ")
+        
+    return f"Wynik to {sum(in_values_extended)+in_values[0]+in_values[1]}"
+
+def sub():
+    in_values = [float(i) for i in user_in()]
+    logging.debug(f"Odejmuję {in_values[0]} i {in_values[1]}")
+    diff = in_values[0] - in_values[1]
+
+    return f"Wynik to {diff}"
+
+def mul():
+    prod = 1
+    in_values = [float(i) for i in user_in()]
+    in_values_extended = [float(i) for i in user_in_extended()]
+    logging.debug(f"Multiplikuję {in_values[0]} i {in_values[1]}")
+    if len(in_values_extended) > 0:
+        logging.debug(f"i multiplikuję {in_values_extended[::]} ")
+    for x in in_values_extended:
+        prod = prod * x
+
+    return f"Wynik to {prod*in_values[0]*in_values[1]}"
+
+def div():
+    in_values = [float(i) for i in user_in()]
+    logging.debug(f"Dzielę {in_values[0]} i {in_values[1]}")
+    quo = in_values[0] / in_values[1]
     
-    sys.argv.pop()
-    counter=2
-    for x in range(0,len(sys.argv)-3):
-        counter=counter+1 
-        
-        logging.debug(f"Dodaję {float(sys.argv[counter])}")  
-             
-    print(f"Wynik to {sum+a+b}")
-def sub(a,b):
-        
-        
-                
-    logging.debug(f"Odejmuję {sys.argv[1]} i {sys.argv[2]}")
-    diff=a-b
-    print(f"Wynik to {diff}")
-def mul(a,b):
-    logging.debug(f"Multiplikuję {sys.argv[1]} i {sys.argv[2]}")
-    prod=1
-    z=""  
-    
-    while z!="gotowe":
-        
-        print("Wpisz dodatkową liczbę albo gotowe: ", end="")
-        z=input()
-        
-        sys.argv.append(z)
-        if z=="gotowe":
-            break
-        try:
-            prod=prod*float(z)   
-        except ValueError:
-            print("To nie liczba")
-            exit()
-        
-    
-    
-                
-    sys.argv.pop()
-    counter=2
-    for x in range (0,len(sys.argv)-3):
-        counter=counter+1  
-        logging.debug(f"Multiplikuję {float(sys.argv[counter])}")  
-                 
-    print(f"Wynik to {prod*a*b}")
-def div(a,b):
-        
-        
-                
-        logging.debug(f"Dzielę {sys.argv[1]} i {sys.argv[2]}")
-        quo=a/b
-        print(f"Wynik to {quo}") 
-        
-           
+    return f"Wynik to {quo}"
 
+calculator = {"1": add, "2": sub, "3": mul, "4": div}
 
-
-
-try:
-    a=float(input("Wpisz składnik 1: "))
-    b=float(input("Wpisz składnik 2: ")) 
-except ValueError:
-    print("to nie liczba")
-    exit()
-       
-sys.argv.append(a)
-sys.argv.append(b)
-
-calculator={"1":add,
-         "2":sub,
-         "3":mul,
-         "4": div}
-
-result=calculator[x](a,b)
+print(calculator[x]())
