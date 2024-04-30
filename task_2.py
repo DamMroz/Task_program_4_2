@@ -10,7 +10,6 @@ def user_initial():
     
     return x
 
-x = user_initial()
 
 def user_in():
     try:
@@ -21,6 +20,7 @@ def user_in():
         exit()
         
     return a, b
+
 
 def user_in_extended():
     z = input("Dalsze liczby: ")
@@ -35,55 +35,51 @@ def user_in_extended():
     
     return z 
 
-a,b=user_in()
 
-numbers_list=[]
-if x=="1" or x=="3":
-    numbers_list=user_in_extended()
-
-def add(a,b,numbers_list):
+def add(a,b,*numbers_list):
+    logging.debug(f"Dodaję {a} i {b}")
+    
+    logging.debug(f"i dodaję {numbers_list}")
     sum=a+b
     for element in numbers_list:
         sum+=float(element)
         
     return sum
 
-def sub(a,b,numbers_list):
+
+def sub(a,b,*numbers_list):
+    logging.debug(f"Odejmuję {a} i {b}")
     sub=a-b
 
     return sub
 
-def mul(a,b,numbers_list):
+
+def mul(a,b,*numbers_list):
+    logging.debug(f"Multiplikuję {a} i {b}")
+    
+    logging.debug(f"i multiplikuję {numbers_list}")
     prod=1
     for element in numbers_list:
         prod=prod*float(element)
         
     return prod*a*b
-    
-def div(a,b,numbers_list):
+
+
+def div(a,b,*numbers_list):
+    logging.debug(f"Dzielę {a} i {b}")
     quo=a/b
 
     return quo
 
+
 calculator = {"1": add, "2": sub, "3": mul, "4": div}
 
-def add_info():
-    logging.debug(f"Dodaję {a} i {b}")
-    if len(numbers_list)> 0:
-        logging.debug(f"i dodaję {numbers_list}")
 
-def sub_info():
-    logging.debug(f"Odejmuję {a} i {b}")
-    
-def mul_info():
-    logging.debug(f"Multiplikuję {a} i {b}")
-    if len(numbers_list)> 0:
-        logging.debug(f"i multiplikuję {numbers_list}")
-
-def quo_info():
-    logging.debug(f"Dzielę {a} i {b}")
-    
-information= {"1":add_info,"2":sub_info,"3":mul_info, "4":quo_info}
-
-information[x]()
-print(f"Wynik to {calculator[x](a,b,numbers_list)}")
+if __name__ == "__main__":
+    x = user_initial()
+    a,b=user_in()
+    numbers_list=[]
+    if x=="1" or x=="3":
+        numbers_list=user_in_extended()
+        
+    print(f"Wynik to {calculator[x](a,b,*numbers_list)}")
